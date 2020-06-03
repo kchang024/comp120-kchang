@@ -1,17 +1,10 @@
+README.md
+COMP120 - Summer 2020
 
- 
-                       README.md
- 
-                  COMP120 - Summer 2020
- 
-     Assignment    : Lab 5 - Responsive
-     Author        : Kevin Chang
-     Date          : 06-02-20
+Assignment    : Lab 5 - Responsive
+Author        : Kevin Chang
+Date          : 06-02-20
       
-      README for lab 4
-      @ kchang024.github.io
- 
-
 
 
 Correct Implementation:
