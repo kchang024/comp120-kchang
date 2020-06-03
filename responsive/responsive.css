@@ -1,6 +1,7 @@
 /* screen width > 1200 pixels displays the top row, left most image */
-@media (min-width: 1201px) {
-
+@media only screen and screen and (min-width: 1201px) {
+	.software {width: 128px; height: 240px; 
+		       background: url(software.png) 0 0px;}
 }
 
 /* screen width > 1100 <= 1200 displays the top row, second from left */
