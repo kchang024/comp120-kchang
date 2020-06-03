@@ -5,44 +5,44 @@
 }
 
 /* screen width > 1100 <= 1200, top row... second from left */
-@media only screen and (min-width: 1100px) and (max-width: 1200px) {
+@media only screen and (min-width: 1101px) and (max-width: 1200px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -128px 0px;}
 }
 
 /* screen width > 1000 <= 1100, top row... third image */
-@media only screen and (min-width: 1000px) and (max-width: 1100px) {
+@media only screen and (min-width: 1001px) and (max-width: 1100px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -256px 0px;}
 }
 
 /* screen width > 900 <= 1000, top row... fourth image */
-@media only screen and (min-width: 900px) and (max-width: 1000px) {
+@media only screen and (min-width: 901px) and (max-width: 1000px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -384px 0px;}
 }
 
 /* screen width > 800 <= 900, top row... last image */
-@media only screen and (min-width: 800px) and (max-width: 900px) {
+@media only screen and (min-width: 801px) and (max-width: 900px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -512px 0px;}
 }
 
 /* screen width > 700 <= 800 
    This and below -- displays the bottom row. Starting with the first image */
-@media only screen and (min-width: 700px) and (max-width: 800px) {
+@media only screen and (min-width: 701px) and (max-width: 800px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -0px -240px;}
 }
 
 /* screen width > 600 <= 700 */
-@media only screen and (min-width: 600px) and (max-width: 700px) {
+@media only screen and (min-width: 601px) and (max-width: 700px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -128px -240px;}
 }
 
 /* screen width > 500 <= 600 */
-@media only screen and (min-width: 500px) and (max-width: 600px) {
+@media only screen and (min-width: 501px) and (max-width: 600px) {
 	.software {width: 128px; height: 240px; 
 		       background:url(software.png) -256px -240px;}
 }
