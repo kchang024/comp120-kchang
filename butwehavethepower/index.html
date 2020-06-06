@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Union Strike Folk Song</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+<h1 id="title">Union Strike Folk Song</h1>
+<video src="https://www.cs.tufts.edu/comp/120/butwehavethepower.mp4" 
+       id="butwehavethepower" controls></video>
+<div id="lyrics"></div>
+
+
+<script id="script" type="text/javascript">
+	// Complete this section and create a CSS file named style.css
+	var video  = document.getElementById("butwehavethepower");
+	var lyrics = document.getElementById("lyrics");
+
+	video.addEventListener("timeupdate", function() {
+		if (video.currentTime > 5.5 && video.currentTime < 10) {
+			lyrics.innerHTML = 
+			"<h2>Come gather round children. It's high time ye learned</h2>";
+		}
+		else if (video.currentTime > 10.5 && video.currentTime < 16) {
+			lyrics.innerHTML = 
+			"<h2>'Bout a hero named Homer. And a devil named Burns.</h2>"
+		}
+		else if (video.currentTime > 16.7 && video.currentTime < 21) {
+			lyrics.innerHTML = 
+			"<h2>We'll march 'till we drop. The girls and the fellas.</h2>"
+		}
+		else if (video.currentTime > 21 && video.currentTime < 27) {
+			lyrics.innerHTML = 
+			"<h2>We'll fight 'til the death. Or else fold like umbrellas.</h2>"
+		}
+		else if (video.currentTime > 27 && video.currentTime < 28.5) {
+			lyrics.innerHTML = 
+			"<h2>*** The crowd grunts ***</h2>"
+		}
+		else if (video.currentTime > 28.5 && video.currentTime < 30) {
+			lyrics.innerHTML = 
+			"<h2>Burns: Full power Smithers.</h2>"
+		}
+		else if (video.currentTime >32 && video.currentTime < 36) {
+			lyrics.innerHTML = 
+			"<h2>*** Burns inaudible grunts ***</h2>"
+		}
+		else if (video.currentTime > 36 && video.currentTime < 37) {
+			lyrics.innerHTML = 
+			""
+		}
+		else if (video.currentTime > 37.5 && video.currentTime < 42) {
+			lyrics.innerHTML = 
+			"<h2>So we'll march day and night. By the big cooling tower.</h2>"
+		}
+		else if (video.currentTime > 42 && video.currentTime < 51) {
+			lyrics.innerHTML = 
+			"<h2>They have the plant. But we have the power.</h2>"
+		}
+		else if (video.currentTime > 51.5 && video.currentTime < 55) {
+			lyrics.innerHTML = 
+			"<h2>Lenny: Now do\"Classical Gas!\"</h2>" 
+		}
+		else if (video.currentTime > 55 && video.currentTime < 67) {
+			lyrics.innerHTML = 
+			"<h2>*** Lisa strums, Lenny jams ***</h2>"
+		}
+		else if (video.currentTime > 70 && video.currentTime < 76) {
+			lyrics.innerHTML = 
+			"<h1>So we'll march day and night. By the big cooling tower.</h1>"
+		}
+		else if (video.currentTime > 76 && video.currentTime < 81) {
+			lyrics.innerHTML = 
+			"<h1>They have the plant. But we have the power.</h1>"
+		}
+		else if (video.currentTime > 81 && video.currentTime < 86) {
+			lyrics.innerHTML = 
+			"<h1>So we'll march day and night. By the big cooling tower.</h1>"
+		}
+		else if (video.currentTime > 86 && video.currentTime < 91) {
+			lyrics.innerHTML = 
+			"<h1>They have the plant. But we have the power.</h1>"
+		}
+		else if (video.currentTime > 91 && video.currentTime < 93) {
+			lyrics.innerHTML = 
+			"<h2>*** Burns talks to Smithers. ***</h2>"
+		}
+		else if (video.currentTime > 108) {
+			lyrics.innerHTML = 
+		 	"<h1>*** THE PEOPLE WIN!!! ***</h1>"
+		}
+
+	}, false);
+
+</script>
+</body>
+</html>
