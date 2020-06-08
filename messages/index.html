@@ -8,13 +8,24 @@
   <script>
     function loadMessages() {
       jsonData = '[{"id":1,"content":"Do you really want to hurt me?","username":"Boy"},{"id":2,"content":"Do you really want to make me cry?","username":"George"}]';
-      // Your code here......
+
       parsed = JSON.parse(jsonData);
-      console.log(parsed['content']);
-      console.log(parsed['username']);
-      console.log(parsed['content']);
-      console.log(parsed['username']);
+
+      var newDiv = document.createElement("div");
+
+       for (i = 0; i < 2; i++) {
+         var newContent = document.createTextNode(parsed[i]['content']);
+         var newUsername = document.createTextNode(parsed[i]['username']);
+         var addspace = document.createTextNode("\n");
+         newDiv.appendChild(newContent);
+         newDiv.appendChild(newUsername);
+         newDiv.appendChild(addspace);
+
+         var currentDiv = document.getElementById("messages");
+         document.body.insertBefore(newDiv, currentDiv);
+       }
     }
+    
   </script>
 </head>
 
