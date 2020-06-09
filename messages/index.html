@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <title>Messages</title>
   <script>
     function loadMessages() {
-      jsonData = '[{"id":1,"content":"Do you really want to hurt me?","username":"Boy"},{"id":2,"content":"Do you really want to make me cry?","username":"George"}]';
+      jsonData = 
+      '[{"id":1,"content":"Do you really want to hurt me?","username":"Boy"},'
+      +'{"id":2,"content":"Do you really want to make me cry?",'
+      +'"username":"George"}]';
 
-      parsed = JSON.parse(jsonData);
+      parsed     = JSON.parse(jsonData);
 
+      // create new div element
       var newDiv = document.createElement("div");
 
-       for (i = 0; i < 2; i++) {
-         var newContent = document.createTextNode(parsed[i]['content']);
-         var newUsername = document.createTextNode(parsed[i]['username']);
-         var addspace = document.createTextNode("\n");
-         newDiv.appendChild(newContent);
-         newDiv.appendChild(newUsername);
-         newDiv.appendChild(addspace);
+      for (i = 0; i < 2; i++) {
+        //give div new content
+        var newContent  = document.createTextNode(parsed[i]['content']);
+        //give div new username
+        var newUsername = document.createTextNode(parsed[i]['username']);
+        // give div a space
+        var addspace    = document.createTextNode("\n");
 
-         var currentDiv = document.getElementById("messages");
-         document.body.insertBefore(newDiv, currentDiv);
-       }
+        // add the text nodes to the div
+        newDiv.appendChild(newContent);
+        newDiv.appendChild(newUsername);
+        newDiv.appendChild(addspace);
+
+        // adds the div elements to the DOM
+        var currentDiv = document.getElementById("messages");
+        document.body.insertBefore(newDiv, currentDiv);
+      }
     }
-    
   </script>
 </head>
 
