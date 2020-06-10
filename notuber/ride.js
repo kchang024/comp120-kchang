@@ -25,6 +25,7 @@ function initMap() {
     }
   };
 
+  // List of the vehicles and their coordinates
   var carLocations = [
   { 
     position: new google.maps.LatLng(42.3453, -71.0464),
@@ -47,8 +48,9 @@ function initMap() {
   }
   ];
 
+  // Marker for each vehicle in the list above
   carLocations.forEach(function(carLocations) {
-    var marker = new google.maps.Marker ( {
+    var marker = new google.maps.Marker( {
       position: carLocations.position,
       icon : icons[carLocations.type].icon,
       map: map
