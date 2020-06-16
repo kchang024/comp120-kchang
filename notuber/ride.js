@@ -1,7 +1,7 @@
 var map;
 var myLat = 0;
 var myLng = 0;
-var infowindow = new google.maps.InfoWindow();
+
 
 function initMap() {
 
@@ -84,10 +84,13 @@ function makeMap() {
   // Marker for myLocation
   var centerMarker = new google.maps.Marker({
     position: myLocation, 
-    map: map
+    map: map,
+    title: "Closest vehicle: "
   });
 
-  google.maps.event.addListener(centerMarker, 'click', function() {
+  var infowindow = new google.maps.InfoWindow();
+
+  google.maps.event.addListener(centerMarker, "click", function() {
     infowindow.setContent(centerMarker.title);
     infowindow.open(map, centerMarker);
   });
