@@ -3,10 +3,7 @@ var myLat = 0;
 var myLng = 0;
 
 
-
-
 function initMap() {
-
   //Location of initial map
   var myLocation = new google.maps.LatLng(myLat, myLng);
 
@@ -17,53 +14,6 @@ function initMap() {
         });
 
   getLocation();
-
-  // // Marker for South Station
-  // var centerMarker = new google.maps.Marker({
-  //   position: myLocation, 
-  //   map: map
-  // });
-
-//   // Car icon for display in Google Maps
-//   var icons = {
-//     car: {
-//       name: 'Car',
-//       icon: 'car.png'
-//     }
-//   };
-
-//   // List of the vehicles and their coordinates
-//   var carLocations = [
-//   { 
-//     position: new google.maps.LatLng(42.3453, -71.0464),
-//     type: 'car'
-//   }, {
-//     position: new google.maps.LatLng(42.3662, -71.0621),
-//     type: 'car'
-//   }, {
-//     position: new google.maps.LatLng(42.3603, -71.0547),
-//     type: 'car'
-//   }, {
-//     position: new google.maps.LatLng(42.3472, -71.0802),
-//     type: 'car'
-//   }, {
-//     position: new google.maps.LatLng(42.3663, -71.0544),
-//     type: 'car'
-//   }, {
-//     position: new google.maps.LatLng(42.3542, -71.0704),
-//     type: 'car'
-//   }
-//   ];
-
-//   // Marker for each vehicle in the list above
-//   carLocations.forEach(function(carLocations) {
-//     var marker = new google.maps.Marker( {
-//       position: carLocations.position,
-//       icon : icons[carLocations.type].icon,
-//       map: map
-//     });
-//   });
-
 }
 
 function getLocation() {
@@ -79,32 +29,17 @@ function getLocation() {
   }
 }
 
+
 function makeMap() {
   myLocation = new google.maps.LatLng(myLat, myLng);
 
   map.panTo(myLocation);
-
-  // Marker for myLocation
-  var centerMarker = new google.maps.Marker({
-    position: myLocation, 
-    map: map,
-    title: "Closest vehicle: "
-  });
-
- 
-
-  var infowindow = new google.maps.InfoWindow();
-
-  google.maps.event.addListener(centerMarker, 'click', function() {
-    infowindow.setContent(centerMarker.title);
-    infowindow.open(map, centerMarker);
-  });
-
  
   console.log("hi from makemap");
 
   hailRides();
 }
+
 
 function hailRides() {
 
@@ -126,9 +61,11 @@ function hailRides() {
       // to set the boundary of the map according to the markers
       var bounds = new google.maps.LatLngBounds();
 
+      // initial declare for variable to hold closest distance
+      var distClosest = 1000000.11;
+
       // marks each available ride on the map
       // extending the bounds of the map as needed
-
       for (var i = 0; i < parsedData.length; i++){
         rideLat = parsedData[i]['lat'];
         rideLng = parsedData[i]['lng'];
@@ -139,10 +76,49 @@ function hailRides() {
           icon: 'car.png',
           map: map
         });
+
+        // calculates distance between your location and service car
+        distBetw = google.maps.geometry.spherical.computeDistanceBetween(myLocation, rideLocation);
+        console.log("diff in meters: " + distBetw);
+        console.log("closest: " + distClosest);
+
+        if (distBetw < distClosest) {
+          distClosest = distBetw;
+          console.log("in if");
+          var closestUser = parsedData[i]['username'];
+        }
+
         bounds.extend(rideLocation);
       }
+
       map.fitBounds(bounds);
 
+      // converts the distance from meters to miles
+      distClosest = distClosest * 0.000621371;
+
+      // Marker for myLocation
+      var centerMarker = new google.maps.Marker({
+        position: myLocation, 
+        map: map,
+        title: "Hi Ming! Based on Google's Geolocation, this is where YOU are!"
+      });
+
+      // Infowindow for your marker showing ride hail service information
+      var infowindow = new google.maps.InfoWindow();
+
+      var ContentString = '<h1>Where is my notUber?</h1>' +
+                          '<div id="bodyContent">' +
+                          '<p>Closest vehicle is: '  + closestUser + '</p>' + 
+                          '<p>Currently at: ' + rideLocation + '</p>' +
+                          '<p>' + closestUser + ' is ' + distClosest + ' miles away' +'</p>'
+                          '</div>';
+
+      google.maps.event.addListener(centerMarker, 'click', function() {
+        infowindow.setContent(ContentString);
+        infowindow.open(map, centerMarker);
+      });
+
+      console.log("final closest: " + distClosest);
       console.log(parsedData);
       console.log("hi from onreadystatechange, NOW READY");
     }
@@ -155,14 +131,7 @@ function hailRides() {
   };
 
   // CODE TO SEND HERE
-  console.log(myLat);
-  console.log("hi" + myLng);
-
   xhr.send("username=RgSVguNn&lat=" + myLat + "&lng=" + myLng);
-
-
-
     
-
 }
 
