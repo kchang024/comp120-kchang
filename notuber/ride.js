@@ -2,7 +2,7 @@ var map;
 var myLat = 0;
 var myLng = 0;
 
-
+// This function is called via the script src in the html
 function initMap() {
   //Location of initial map
   var myLocation = new google.maps.LatLng(myLat, myLng);
@@ -71,6 +71,8 @@ function hailRides() {
         rideLng = parsedData[i]['lng'];
         rideLocation = new google.maps.LatLng(rideLat, rideLng);
 
+        console.log(rideLocation);
+
         var marker = new google.maps.Marker({
           position: rideLocation,
           icon: 'car.png',
@@ -86,6 +88,8 @@ function hailRides() {
           distClosest = distBetw;
           console.log("in if");
           var closestUser = parsedData[i]['username'];
+          var closestLat = rideLat;
+          var closestLng = rideLng;
         }
 
         bounds.extend(rideLocation);
@@ -109,7 +113,7 @@ function hailRides() {
       var ContentString = '<h1>Where is my notUber?</h1>' +
                           '<div id="bodyContent">' +
                           '<p>Closest vehicle is: '  + closestUser + '</p>' + 
-                          '<p>Currently at: ' + rideLocation + '</p>' +
+                          '<p>Currently at: ' + closestLat + ", " + closestLng  + '</p>' +
                           '<p>' + closestUser + ' is ' + distClosest + ' miles away' +'</p>'
                           '</div>';
 
@@ -117,6 +121,21 @@ function hailRides() {
         infowindow.setContent(ContentString);
         infowindow.open(map, centerMarker);
       });
+
+      //adding polyline paths
+      var linePath = [
+        {lat: myLat, lng: myLng},
+        {lat: closestLat, lng: closestLng}
+      ];
+
+      var polyLine = new google.maps.Polyline({
+        path: linePath,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      polyLine.setMap(map);
 
       console.log("final closest: " + distClosest);
       console.log(parsedData);
@@ -132,6 +151,6 @@ function hailRides() {
 
   // CODE TO SEND HERE
   xhr.send("username=RgSVguNn&lat=" + myLat + "&lng=" + myLng);
-    
 }
+
 
