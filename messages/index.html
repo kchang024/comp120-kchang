@@ -17,7 +17,7 @@
       // create new div element
       var newDiv = document.createElement("div");
 
-      for (i = 0; i < 2; i++) {
+      for (i = 0; i < jsonData.length; i++) {
         //give div new content
         var newContent  = document.createTextNode(parsed[i]['content']);
         //give div new username
