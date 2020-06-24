@@ -51,6 +51,10 @@ function hailRides() {
       var responseData = xhr.responseText;
       // parse data into list
       var parsedData = JSON.parse(responseData);
+
+      // ----- DELETE THESE -----
+      console.log("response = " + responseData);
+      console.log("parsed = " + parsedData);
       // to set the boundary of the map according to the markers
       var bounds = new google.maps.LatLngBounds();
       // initial declare for variable to hold closest distance
