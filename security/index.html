@@ -44,8 +44,9 @@
                 <li>Provides an index page that displays all passengers's 
                 requests for notUber service.</li>
             </ul></p>
-            
         </section>
+
+        <hr/>
 
         <section>
             <h2>Methodology</h2>
@@ -99,6 +100,8 @@
 
             </p>
         </section>
+
+        <hr/>
         
         <section>
             <h2>Issues Found</h2>
@@ -153,7 +156,7 @@
                 </p>
 
 
-<p class="issue">Issue #2</p>
+                <p class="issue">Issue #2</p>
 
                 <p class="issuesCat">Issue:</p>
                 <p>SQL Injection vulnerability - <br/> adding ‘+OR+1=1-- to the 
@@ -192,17 +195,17 @@
                     where you construct queries using user input instead use 
                     prepared statements, parameterized queries or stored 
                     procedures. See code below:
-<xmp>
-    else {
-        client.query(‘SELECT * FROM vehicles WHERE username = ?’, [usernameEntry], (error, result) => {
-            if (!error) {
-                response.send(result.rows);
-            }
-        });
-    }
-</xmp>
+                <xmp>
+                    else {
+                        client.query(‘SELECT * FROM vehicles WHERE username = ?’, [usernameEntry], (error, result) => {
+                            if (!error) {
+                                response.send(result.rows);
+                            }
+                        });
+                    }
+                </xmp>
 
-<p class="issue">Issue #3</p>
+                <p class="issue">Issue #3</p>
 
                 <p class="issuesCat">Issue:</p>
                 <p>Cross-Site Scripting XSS vulnerability - <br/> adding JavaScript code to the 
@@ -245,7 +248,7 @@
                     if statement:
 
                 <xmp>&& validator.isAlphanumeric(username);</xmp>
-</p>
+                </p>
 
         </section>
 
