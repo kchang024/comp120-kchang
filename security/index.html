@@ -1,0 +1,276 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <title>notUber Security Assessment</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="default_style.css"/>
+    </head>
+
+    <body>
+        <h1>
+            Kevin Chang<br/>
+            Summer 2020<br/>
+            COMP120 - Web Security and Engineering<br/>
+            Lab 13 - Security and Privacy Assessment of Ride-Hailing Service
+            <br/>
+        </h1>
+        
+        <section>
+            <h2>Introduction</h2>
+            <p>Hi, my name is Kevin, I'm a security consultant who was hired 
+            to resolve security and privacy issues for notUber, a ride-hailing 
+            service. <br/>This ride-hailing service has many different 
+            functions, they are:
+            <ul>
+                <li>Provides a /rides API (POST) that allows 
+                people looking for rides to enter their name, latitude and 
+                longitude and gives that POST request a list of available
+                notUber vehicles available for a ride.</li>
+
+                <li>Provides a /update API (POST) that allows the 
+                notUber driver vehicles to update their 
+                availability for picking up passengers. Accepts username,
+                latitude, longitude.</li>
+
+                <li>Provides a /passenger.json API (GET) that accepts 
+                a passenger's username and displays all the database records 
+                for that username.</li>
+
+                <li>Provides a /vehicle.json API (GET) that accepts a 
+                notUber driver's username and displays all the database 
+                records for that username.</li>
+
+                <li>Provides an index page that displays all passengers's 
+                requests for notUber service.</li>
+            </ul></p>
+            
+        </section>
+
+        <section>
+            <h2>Methodology</h2>
+            <p>Tools: Curl<br/>
+            The tool I used was Curl and the methods of attack were SQL 
+            injection and Cross-Site scripting XSS via the browser/command line.
+            </p><br/>
+
+            <p> SQL injection vulerability detected - Two issues found using 
+            SQL injection:<br/>By inserting '+OR+1=1-- into the GET request 
+            for passengers; like so: </p>
+
+            <xmp>https://jordan-marsh.herokuapp.com/passenger.json?username=Kevin'+OR+1=1-- </xmp>
+
+            <p>What results in the SQL query will return all passenger's 
+            database records where the username is Kevin or 1 is equal to 1. 
+            <br/>Since 1 = 1 will always be true, this SQL query will return 
+            all passenger database records regardless of the username given. 
+            <br/> <br/>Similarly this can be done with the GET request for vehicles; 
+            like so:</p> 
+
+            <xmp> https://jordan-marsh.herokuapp.com/vehicle.json?username=Kevin'+OR+1=1-- </xmp> 
+            <p>This will display all vehicle's database records regardless of 
+            what the username given is.</p><br/>
+            <p>Cross-site scripting (XSS) vulnerability detected - <br/> 
+            The 2 POST APIs allow the users to insert their usernames 
+            into the databases of passengers or vehicles without any measures 
+            to protect against XSS. <br/> I tested this by injecting javascript 
+            code via this Curl 
+            command: <xmp>curl --data "username=<body onload=alert('HACKED')>&lat=40.2&lng=-70" https://jordan-marsh.herokuapp.com/rides</xmp>
+            </p>
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Abstract of Findings</h2>
+            <p>HIGH LEVEL OF URGENCY NEEDED.<br/>Four major vulnerabilities 
+            were found in the system using 2 different methods of testing 
+            the system.<br/>These 2 security risks are known as SQL injection 
+            and Cross-Site Scripting XSS, both in the top 10 web application 
+            security risks. You can learn more here: 
+            <a href="https://owasp.org/www-project-top-ten/">OSWASP TOP TEN</a>
+            <br/>The security of our database is in question, 
+            we risk exposing passenger and notUber driver's vehicle records. 
+            (SQL injection)<br/>We also risk the functionality of our site and 
+            exposing visitors to our site to potential harm and danger. <br/>
+            If an attacker wanted to they could manipulate our website in a way 
+            where sensitive data can get sent to them about visitors to our 
+            site without them even knowing. (XSS)<br/>
+
+            </p>
+        </section>
+        
+        <section>
+            <h2>Issues Found</h2>
+            
+                <p class="issue">Issue #1</p>
+
+                <p class="issuesCat">Issue:</p>
+                <p>SQL Injection vulnerability - <br/> adding ‘+OR+1=1-- to the 
+                URL request after the username field
+                https://jordan-marsh.herokuapp.com/passenger.json?
+                username=Kevin'27+OR+1=1-- 
+                (see description below for more details)</p>
+                
+                <p class="issuesCat">Location/page where issue was found:</p>
+
+                <p>/passenger.json code, starting at line 76</p>
+                    
+                <p class="issuesCat">Severity of issue (low, med, high):</p>
+                <p>HIGH! <br/>App intended to only be able to look at records of
+                a given username, out of privacy reasons being able to access 
+                records you shouldn’t have access to, is a high severity. <br/>
+                SQL injections overall is a high risk method of attack, 
+                #1 on OWASP Top 10.</p>
+
+                <p class="issuesCat">Description of issue:</p>
+                <p> The app should only be able to retrieve a list of all 
+                    passenger records when given a specific username. 
+                    If that username isn’t found, an empty list should return.
+                    Thus users of this app should have only been able to 
+                    retrieve a passenger’s records if they know the username.
+                    By doing a SQL injection attack, were able to retrieve 
+                    records of all passengers without knowing a specific 
+                    username.</p>
+
+                <p class="issuesCat">Proof of vulnerability:</p>
+                <p id="issuePic"><img src="issue1.png"  
+                    alt="screenshot of issue1"/></p>
+
+                <p class="issuesCat">Resolution:</p>
+                <p> Don't use dynamic SQL where you construct queries using user 
+                    input instead use prepared statements, parameterized queries 
+                    or stored procedures. See code below:
+                    <xmp>
+                    else {
+                        client.query(‘SELECT * FROM passengers WHERE username = ?’, [usernameEntry], (error, result) => {
+                            if (!error) {
+                                response.send(result.rows);
+                            }
+                        });
+                    }
+                    </xmp>
+                </p>
+
+
+<p class="issue">Issue #2</p>
+
+                <p class="issuesCat">Issue:</p>
+                <p>SQL Injection vulnerability - <br/> adding ‘+OR+1=1-- to the 
+                URL request after the username field
+                https://jordan-marsh.herokuapp.com/vehicle.json?
+                username=Kevin'27+OR+1=1-- 
+                (see description below for more details)</p>
+                
+                <p class="issuesCat">Location/page where issue was found:</p>
+
+                <p>/vehicle.json code, starting at line 91</p>
+                    
+                <p class="issuesCat">Severity of issue (low, med, high):</p>
+                <p>HIGH! <br/>App intended to only be able to look at records of
+                a given username; out of privacy reasons being able to access 
+                records you shouldn’t have access to is a high severity. <br/>
+                SQL injections overall is a high risk method of attack, 
+                #1 on OWASP Top 10.</p>
+
+                <p class="issuesCat">Description of issue:</p>
+                <p> The app should only be able to retrieve a list of all 
+                    vehicle records when given a specific username. 
+                    If that username isn’t found, an empty list should return.
+                    Thus users of this app should have only been able to 
+                    retrieve a vehicle’s records if they know the username.
+                    By doing a SQL injection attack, were able to retrieve 
+                    records of all vehicles without knowing a specific 
+                    username.</p>
+
+                <p class="issuesCat">Proof of vulnerability:</p>
+                <p id="issuePic"><img src="issue2.png"  
+                    alt="screenshot of issue2"/></p>
+
+                <p class="issuesCat">Resolution:</p>
+                <p>Similarly to issue #1's resolution, don't use dynamic SQL 
+                    where you construct queries using user input instead use 
+                    prepared statements, parameterized queries or stored 
+                    procedures. See code below:
+<xmp>
+    else {
+        client.query(‘SELECT * FROM vehicles WHERE username = ?’, [usernameEntry], (error, result) => {
+            if (!error) {
+                response.send(result.rows);
+            }
+        });
+    }
+</xmp>
+
+<p class="issue">Issue #3</p>
+
+                <p class="issuesCat">Issue:</p>
+                <p>Cross-Site Scripting XSS vulnerability - <br/> adding JavaScript code to the 
+                username field instead of an username: 
+                <xmp>curl --data "username=<body onload=alert('HACKED')>&lat=40.2&lng=-70" https://jordan-marsh.herokuapp.com/rides </xmp>
+                (see description below for more details)</p>
+                
+                <p class="issuesCat">Location/page where issue was found:</p>
+
+                <p>/rides code, starting at line 16</p>
+                    
+                <p class="issuesCat">Severity of issue (low, med, high):</p>
+                <p>HIGH! <br/>Username inputs aren’t being validated. Thus the 
+                user is able to include JavaScript into the username input. 
+                When the input is later sent as a response in the (‘/‘) 
+                index page it will run whatever javascript was inserted into the 
+                username table. This has the potential to cause very deadly 
+                effects to the database.</p>
+
+                <p class="issuesCat">Description of issue:</p>
+                <p> Cross-Site Scripting vulnerability was detected - hackers 
+                have the ability to add javascript to the username field in the 
+                HTTP POST request- this code is later sent as a http response on 
+                the index page we were able to manipulate the database username 
+                field with javascript. See picture below</p>
+
+                <p class="issuesCat">Proof of vulnerability:</p>
+                <p id="issuePic"><img src="issue3.png"  
+                    alt="screenshot of issue3"/></p>
+
+                <p class="issuesCat">Resolution:</p>
+                <p> One resolution is to use a validator to validate the user's 
+                    input for the username. One important lesson a wise teacher
+                    once taught me: NEVER TRUST USER INPUT!!!
+                    Set it so that the username only accepts alphanumeric 
+                    characters, no symbols. We can add additional 
+                    conditional checks before we process the client.query
+                    in app.post. Since this server already has the validator 
+                    addon we can use that. On line 23 add the following to the 
+                    if statement:
+
+                <xmp>&& validator.isAlphanumeric(username);</xmp>
+</p>
+
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Conclusion</h2>
+            
+            <p>I would recommend a HIGH level of urgency in fixing these issues.
+            If possible cease all website functionality until these 
+            vulnerabilities have been patched.<br/>I would recommend a thorough 
+            penetration test for any newly created web apps.<br/>Potentially 
+            hiring a web security developer/officer to oversee future web 
+            security operations. <br/>There is also software services that can 
+            help detect vulnerabilities in web apps. <br/>Application services 
+            such as Burp Suite can allow users/companies to secure their apps 
+            from any vulnerabilities.<br/>Burp suite has a lot of powerful tools 
+            used for penetration testing.<br/>Burp suite offers enterprise 
+            automated protection for $3,999 per year.<br/>If you do hire a web 
+            security officer Burp suite offers their professional 
+            tool suite for professional penetration testers for $399/per 
+            user per year.</p>
+        </section>
+
+            
+    </body>
+
+</html>

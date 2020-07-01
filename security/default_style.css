@@ -1,0 +1,35 @@
+/******************************************************************** 
+ *
+ *                       default_style.css
+ *
+ *      COMP120 - Summer 2020
+ *
+ *      Assignment    : Lab 13 - Security and Privacy Assessment of 
+                                 Ride-Hailing Service
+ *      Author        : Kevin Chang
+ *      Date          : 07-01-20
+ *      
+ *      CSS stylesheet for /security/index.html
+ *
+ ********************************************************************/
+
+h1 {
+    font-size   : 30px; 
+    text-align: center;
+}
+
+h4 {
+    font-size   : 30px;
+    text-align  : center;
+}
+
+.issue {
+    font-size   : 20px;
+    font-weight : bold;
+}
+
+.issuesCat {
+    
+    text-decoration: underline;
+}
+
